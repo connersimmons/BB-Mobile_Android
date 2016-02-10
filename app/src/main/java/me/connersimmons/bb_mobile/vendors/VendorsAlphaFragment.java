@@ -32,6 +32,7 @@ public class VendorsAlphaFragment extends ListFragment implements OnItemClickLis
 
     private static final String TAG = "VENDORS_ALPHA_FRAGMENT";
     private static final String BB_VENDOR_GROUP_NAME = "MyBlueBookVendors";
+
     private ProgressDialog pDialog;
     private Handler updateBarHandler;
     ArrayList<String> contactList;
@@ -138,8 +139,6 @@ public class VendorsAlphaFragment extends ListFragment implements OnItemClickLis
                 String id = groups_cursor.getString(0);
                 groups.put(id, group_title);
             }
-
-
         }
 
         Cursor dataCursor = contentResolver.query(
@@ -162,14 +161,11 @@ public class VendorsAlphaFragment extends ListFragment implements OnItemClickLis
                 Log.d(TAG, "groupTitle : " + groupTitle + " contact_id: " + id);
 
                 if (groupTitle.equals(BB_VENDOR_GROUP_NAME)) {
-                    System.out.println("Fuckin match baby!");
                     System.out.println(display_name);
                     contactList.add(display_name);
 
                 }
             }
-
-
         }
 
         groups_cursor.close();

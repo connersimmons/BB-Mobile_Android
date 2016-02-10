@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    mavenCentral()
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -29,4 +33,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.github.eluleci:flatui:3.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
+    compile 'com.googlecode.ez-vcard:ez-vcard:0.9.9'
 }

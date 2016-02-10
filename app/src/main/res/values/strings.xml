@@ -7,6 +7,7 @@
     <!-- Action Titles -->
     <string name="action_settings">Settings</string>
     <string name="action_add_local_contact">Add Local Contact</string>
+    <string name="action_add_vcard_contact">Add vCard Contact</string>
     <string name="action_new_project">New Project</string>
 
     <!-- Page Titles -->

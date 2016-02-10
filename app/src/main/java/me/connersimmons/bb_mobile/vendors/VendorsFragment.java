@@ -61,13 +61,6 @@ public class VendorsFragment extends Fragment {
             }
         });
 
-
-
-
-
-
-
-
         setHasOptionsMenu(true);
 
         return view;
@@ -95,7 +88,6 @@ public class VendorsFragment extends Fragment {
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
                 return true;
-
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
