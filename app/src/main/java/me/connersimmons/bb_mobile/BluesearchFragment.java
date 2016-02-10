@@ -1,11 +1,9 @@
 package me.connersimmons.bb_mobile;
 
 
-import android.content.Context;
-import android.content.OperationApplicationException;
+import android.content.ContentResolver;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,11 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,7 +24,6 @@ import java.util.List;
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
 import me.connersimmons.bb_mobile.api.ContactAPI;
-import me.connersimmons.bb_mobile.utils.ContactOperations;
 
 
 /**
@@ -36,6 +31,7 @@ import me.connersimmons.bb_mobile.utils.ContactOperations;
  */
 public class BluesearchFragment extends Fragment {
 
+    private static final String WEBSITE_URL = "http://www.thebluebook.com/";
     private static final String VCARD_URL = "http://www.cs.scranton.edu/~simmonsc3/vcard.vcf";
     String pageContents;
 
@@ -44,18 +40,16 @@ public class BluesearchFragment extends Fragment {
         pageContents = "";
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view =  inflater.inflate(R.layout.fragment_bluesearch,null);
 
-        String url = "http://www.thebluebook.com/";
         WebView webView = (WebView) view.findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(url);
+        webView.loadUrl(WEBSITE_URL);
 
         setHasOptionsMenu(true);
 
@@ -112,12 +106,12 @@ public class BluesearchFragment extends Fragment {
             BufferedReader in = null;
             try {
                 in = new BufferedReader(
-                        new InputStreamReader(vcardURL.openStream()));
+                            new InputStreamReader(vcardURL.openStream()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            String inputLine = null;
+            String inputLine;
             try {
                 while ((inputLine = in.readLine()) != null)
                     pageContents += inputLine + "\n";
@@ -131,33 +125,35 @@ public class BluesearchFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            System.out.println(pageContents);
+            //System.out.println(pageContents);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            ContactOperations operations = new ContactOperations(getActivity().getApplicationContext());
-            List<VCard> vcards = Ezvcard.parse(pageContents).all();
-            for (VCard vcard : vcards) {
-                /*
-                String fullName = vcard.getFormattedName().getValue();
-                String lastName = vcard.getStructuredName().getFamily();
 
-                System.out.println("Full name: " + fullName);
-                System.out.println("Last name: " + lastName);
+            ContentResolver contentResolver = getActivity().getContentResolver();
+            Boolean bbGroupAlreadyExists = ContactAPI.checkForBlueBookGroup(contentResolver);
 
-                try {
-                    operations.insertContact(vcard);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (OperationApplicationException e) {
-                    e.printStackTrace();
+            if (!bbGroupAlreadyExists) {
+                System.out.println("Creating MyBlueBookVendors Group ...");
+                ContactAPI.createGroup(contentResolver);
+            } else {
+                System.out.println("MyBlueBookVendors Group Already Exists!");
+            }
+
+            List<VCard> vCards = Ezvcard.parse(pageContents).all();
+            for (VCard vCard : vCards) {
+                //System.out.println(vCard);
+
+                Boolean contactAlreadyExists = ContactAPI.checkForContact(contentResolver, vCard);
+                if (!contactAlreadyExists) {
+                    System.out.println("Adding " + vCard.getFormattedName().getValue() + " ...");
+                    ContactAPI.insertContact(contentResolver, vCard);
+                } else {
+                    System.out.println(vCard.getFormattedName().getValue() + " Already Exists!");
                 }
-                */
-                System.out.println(vcard);
-                ContactAPI.insertContact(getActivity().getContentResolver(), vcard);//vcard.getStructuredName().getGiven(), vcard.getTelephoneNumbers().get(0).getText());
             }
         }
     }
