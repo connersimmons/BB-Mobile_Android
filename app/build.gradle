@@ -34,4 +34,5 @@ dependencies {
     compile 'com.github.eluleci:flatui:3.0.0'
     compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     compile 'com.googlecode.ez-vcard:ez-vcard:0.9.9'
+    compile 'xyz.danoz:recyclerviewfastscroller:0.1.3'
 }

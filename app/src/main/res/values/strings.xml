@@ -30,4 +30,6 @@
         <item>Neptune</item>
     </string-array>
 
+    <string name="element_text">Element</string>
+
 </resources>

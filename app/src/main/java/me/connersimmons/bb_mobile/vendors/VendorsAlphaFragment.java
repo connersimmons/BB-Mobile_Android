@@ -6,25 +6,27 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.data.ColorDataSet;
+import me.connersimmons.bb_mobile.recyclerview.ColorfulAdapter;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
+import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 /**
  * Created by connersimmons on 2/4/16.
  */
-public class VendorsAlphaFragment extends ListFragment implements OnItemClickListener {
+public class VendorsAlphaFragment extends Fragment { //implements OnItemClickListener {
 
     private static final String TAG = "VENDORS_ALPHA_FRAGMENT";
     private static final String BB_VENDOR_GROUP_NAME = "MyBlueBookVendors";
@@ -60,7 +62,8 @@ public class VendorsAlphaFragment extends ListFragment implements OnItemClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_vendors_alpha, container, false);
+
+        //View view = inflater.inflate(R.layout.fragment_vendors_alpha, container, false);
 
         /*
         pDialog = new ProgressDialog(this.getContext());
@@ -84,11 +87,56 @@ public class VendorsAlphaFragment extends ListFragment implements OnItemClickLis
         });
         */
 
-        return view;
+        //return view;
+
+
+
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_vendors_alpha, container, false);
+
+        // Grab your RecyclerView, RecyclerViewFastScroller, and SectionTitleIndicator from the layout
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        VerticalRecyclerViewFastScroller fastScroller =
+                (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
+        SectionTitleIndicator sectionTitleIndicator =
+                (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
+
+        RecyclerView.Adapter adapter = new ColorfulAdapter(new ColorDataSet());
+        recyclerView.setAdapter(adapter);
+
+        // Connect the recycler to the scroller (to let the scroller scroll the list)
+        fastScroller.setRecyclerView(recyclerView);
+
+        // Connect the scroller to the recycler (to let the recycler scroll the scroller's handle)
+        recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
+
+        // Connect the section indicator to the scroller
+        fastScroller.setSectionIndicator(sectionTitleIndicator);
+
+        setRecyclerViewLayoutManager(recyclerView);
+
+        return rootView;
+
     }
 
+    /**
+     * Set RecyclerView's LayoutManager
+     */
+    public void setRecyclerViewLayoutManager(RecyclerView recyclerView) {
+        int scrollPosition = 0;
 
+        // If a layout manager has already been set, get current scroll position.
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition =
+                    ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    /*
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -98,7 +146,7 @@ public class VendorsAlphaFragment extends ListFragment implements OnItemClickLis
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
     }
-
+    */
 
     /*
     @Override
@@ -112,11 +160,12 @@ public class VendorsAlphaFragment extends ListFragment implements OnItemClickLis
     }
     */
 
+    /*
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
         Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
     }
-
+    */
 
     private void getContacts() {
         ContentResolver contentResolver = getActivity().getContentResolver();
