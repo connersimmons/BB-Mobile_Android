@@ -13,7 +13,7 @@ import java.util.List;
 
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderDecoration;
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.adapter.StickyTestAdapter;
+import me.connersimmons.bb_mobile.adapter.VendorsAlphaViewAdapter;
 import me.connersimmons.bb_mobile.api.ContactsProvider;
 import me.connersimmons.bb_mobile.model.Contact;
 import me.connersimmons.bb_mobile.ui.BaseDecorationFragment;
@@ -47,9 +47,7 @@ public class VendorsAlphaFragment extends BaseDecorationFragment implements Recy
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //getContacts();
-                //myContacts = ContactsProvider.load(mContext);
-                //System.out.println(myContacts);
+                myContacts = ContactsProvider.load(mContext);
             }
         }).start();
 
@@ -67,7 +65,7 @@ public class VendorsAlphaFragment extends BaseDecorationFragment implements Recy
     @Override
     protected void setAdapterAndDecor(RecyclerView list) {
         myContacts = ContactsProvider.load(mContext);
-        final StickyTestAdapter adapter = new StickyTestAdapter(myContacts, this.getActivity());
+        final VendorsAlphaViewAdapter adapter = new VendorsAlphaViewAdapter(myContacts, this.getActivity());
         decor = new StickyHeaderDecoration(adapter);
         setHasOptionsMenu(true);
 
@@ -127,56 +125,4 @@ public class VendorsAlphaFragment extends BaseDecorationFragment implements Recy
     }
     */
 
-    /*
-    private void getContacts() {
-        ContentResolver contentResolver = getActivity().getContentResolver();
-
-        Cursor groups_cursor= contentResolver.query(
-                ContactsContract.Groups.CONTENT_URI,
-                new String[]{
-                        ContactsContract.Groups._ID,
-                        ContactsContract.Groups.TITLE
-                }, null, null, null
-        );
-
-
-        if(groups_cursor!=null){
-            while(groups_cursor.moveToNext()){
-                String group_title = groups_cursor.getString(1);
-                String id = groups_cursor.getString(0);
-                groups.put(id, group_title);
-            }
-        }
-
-        Cursor dataCursor = contentResolver.query(
-                ContactsContract.Data.CONTENT_URI,
-                new String[]{
-                        ContactsContract.Data.CONTACT_ID,
-                        ContactsContract.Data.DATA1,
-                        ContactsContract.Data.DISPLAY_NAME,
-                },
-                ContactsContract.Data.MIMETYPE + "=?",
-                new String[]{ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE}, null
-        );
-
-        if(dataCursor!=null){
-            while(dataCursor.moveToNext()){
-                String id = dataCursor.getString(0);
-                String group_id = dataCursor.getString(1);
-                String display_name = dataCursor.getString(2);
-                String groupTitle = (String) groups.get(group_id);
-                Log.d(TAG, "groupTitle : " + groupTitle + " contact_id: " + id);
-
-                if (groupTitle.equals(BB_VENDOR_GROUP_NAME)) {
-                    System.out.println(display_name);
-                    contactList.add(display_name);
-
-                }
-            }
-        }
-
-        groups_cursor.close();
-        dataCursor.close();
-    }
-    */
 }

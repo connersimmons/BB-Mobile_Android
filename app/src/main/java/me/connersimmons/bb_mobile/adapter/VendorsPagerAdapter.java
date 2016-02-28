@@ -1,8 +1,12 @@
-package me.connersimmons.bb_mobile.vendors;
+package me.connersimmons.bb_mobile.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import me.connersimmons.bb_mobile.vendors.VendorsAlphaFragment;
+import me.connersimmons.bb_mobile.vendors.VendorsCityFragment;
+import me.connersimmons.bb_mobile.vendors.VendorsClassificationFragment;
 
 /**
  * Created by connersimmons on 2/6/16.

@@ -1,11 +1,8 @@
 package me.connersimmons.bb_mobile.vendors;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -15,16 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import me.connersimmons.bb_mobile.MainActivity;
 import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.adapter.VendorsPagerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +44,7 @@ public class VendorsFragment extends Fragment {
 
         /**
          * Workaround:
-         * The setupWithViewPager dose't works without the runnable.
+         * The setupWithViewPager doesn--Missmnnn't works without the runnable.
          */
         tabLayout.post(new Runnable() {
             @Override
