@@ -32,7 +32,8 @@ import me.connersimmons.bb_mobile.api.ContactAPI;
 public class BluesearchFragment extends Fragment {
 
     private static final String WEBSITE_URL = "http://www.thebluebook.com/";
-    private static final String VCARD_URL = "http://www.cs.scranton.edu/~simmonsc3/vcard.vcf";
+    //private static final String VCARD_URL = "http://www.cs.scranton.edu/~simmonsc3/vcard.vcf";
+    private static final String VCARD_URL = "http://www.cs.scranton.edu/~simmonsc3/vCardXtreme.vcf";
     String pageContents;
 
     public BluesearchFragment() {

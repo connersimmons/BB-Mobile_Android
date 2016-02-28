@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import ezvcard.VCard;
 
 /**
- * Created by connersimmons on 2/9/16.
+ * Created by Conner Simmons <cwsimmons149@> on 2/9/16.
  */
 public class ContactAPI {
 
     private static final String BB_GROUP_NAME = "MyBlueBookVendors";
 
-    public static boolean insertContact(ContentResolver contentResolver, VCard vcard) { // String firstName, String mobileNumber) {
+    public static boolean insertContact(ContentResolver contentResolver, VCard vcard) {
         ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
         ops.add(ContentProviderOperation
                 .newInsert(ContactsContract.RawContacts.CONTENT_URI)
@@ -28,11 +28,13 @@ public class ContactAPI {
         ops.add(ContentProviderOperation.newInsert(
                 ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-                .withValue(ContactsContract.Data.MIMETYPE,
+                .withValue(
+                        ContactsContract.Data.MIMETYPE,
                         ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
                 .withValue(
                         ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
                         vcard.getFormattedName().getValue()).build());
+
         //company
         ops.add(ContentProviderOperation
                 .newInsert(ContactsContract.Data.CONTENT_URI)
@@ -40,8 +42,15 @@ public class ContactAPI {
                 .withValue(
                         ContactsContract.Data.MIMETYPE,
                         ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY,
-                        vcard.getOrganization().getType())
+                .withValue(
+                        ContactsContract.CommonDataKinds.Organization.COMPANY,
+                        vcard.getOrganization().getValues().get(0).toString())
+                .withValue(
+                        ContactsContract.CommonDataKinds.Organization.TYPE,
+                        ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+                .withValue(
+                        ContactsContract.CommonDataKinds.Organization.TITLE,
+                        "")
                 .withValue(
                         ContactsContract.CommonDataKinds.Organization.TYPE,
                         ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
@@ -85,7 +94,7 @@ public class ContactAPI {
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE,
                         vcard.getAddresses().get(0).getPostalCode())
                 .withValue(ContactsContract.CommonDataKinds.StructuredPostal.TYPE,
-                        ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+                        ContactsContract.CommonDataKinds.StructuredPostal.TYPE_WORK)
                 .build());
         //website
         ops.add(ContentProviderOperation
@@ -138,22 +147,27 @@ public class ContactAPI {
                 null, null, null, null);
 
 
-        while (c.moveToNext()) {
-            String contactName = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            //String companyName = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
+        if (c != null) {
+            while (c.moveToNext()) {
+                String contactName = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                //String companyName = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Organization.COMPANY));
 
-            if (vCard.getFormattedName().getValue().equals(contactName)) { //&& vCard.getOrganization().getType().equals(companyName)) {
-                contactExists = true;
-                break;
+                if (vCard.getFormattedName().getValue().equals(contactName)) { //&& vCard.getOrganization().getType().equals(companyName)) {
+                    contactExists = true;
+                    break;
+                }
             }
         }
-        c.close();
+
+        if (c != null) {
+            c.close();
+        }
 
         return contactExists;
     }
 
     public static void createGroup(ContentResolver contentResolver) {
-        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         ops.add(ContentProviderOperation
                 .newInsert(ContactsContract.Groups.CONTENT_URI)
@@ -186,13 +200,20 @@ public class ContactAPI {
             }
         }
 
+        if (groupsCursor != null) {
+            groupsCursor.close();
+        }
+
         return bluebookGroupExists;
     }
 
     private static String getGroupId(ContentResolver contactHelper, String groupTitle) {
         Cursor cursor = contactHelper.query(ContactsContract.Groups.CONTENT_URI, new String[]{ContactsContract.Groups._ID, ContactsContract.Groups.TITLE}, null, null, null);
-        cursor.moveToFirst();
-        int len = cursor.getCount();
+
+        if (cursor != null) cursor.moveToFirst();
+
+        int len = 0;
+        if (cursor != null) len = cursor.getCount();
 
         String groupId = null;
         for (int i = 0; i < len; i++) {
@@ -205,7 +226,10 @@ public class ContactAPI {
             }
             cursor.moveToNext();
         }
-        cursor.close();
+
+        if (cursor != null) {
+            cursor.close();
+        }
 
         return groupId;
     }

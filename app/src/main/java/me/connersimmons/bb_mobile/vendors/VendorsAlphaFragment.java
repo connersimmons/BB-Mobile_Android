@@ -1,50 +1,42 @@
 package me.connersimmons.bb_mobile.vendors;
 
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.database.Cursor;
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
+import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderDecoration;
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.data.ColorDataSet;
-import me.connersimmons.bb_mobile.recyclerview.ColorfulAdapter;
-import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
-import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
+import me.connersimmons.bb_mobile.adapter.StickyTestAdapter;
+import me.connersimmons.bb_mobile.api.ContactsProvider;
+import me.connersimmons.bb_mobile.model.Contact;
+import me.connersimmons.bb_mobile.ui.BaseDecorationFragment;
 
 /**
  * Created by connersimmons on 2/4/16.
  */
-public class VendorsAlphaFragment extends Fragment { //implements OnItemClickListener {
+public class VendorsAlphaFragment extends BaseDecorationFragment implements RecyclerView.OnItemTouchListener {
 
     private static final String TAG = "VENDORS_ALPHA_FRAGMENT";
     private static final String BB_VENDOR_GROUP_NAME = "MyBlueBookVendors";
 
-    private ProgressDialog pDialog;
-    private Handler updateBarHandler;
-    ArrayList<String> contactList;
-    Cursor cursor;
-    int counter;
+    private StickyHeaderDecoration decor;
 
-    HashMap groups;
+
+    private Context mContext;
+    private List<Contact> myContacts;
+
+    //HashMap groups;
 
     public VendorsAlphaFragment() {
-        // Required empty public constructor
-        contactList = new ArrayList<String>();
 
-
-        groups = new HashMap<String, String>();
+        //groups = new HashMap<String, String>();
     }
 
     @Override
@@ -55,118 +47,87 @@ public class VendorsAlphaFragment extends Fragment { //implements OnItemClickLis
         new Thread(new Runnable() {
             @Override
             public void run() {
-                getContacts();
+                //getContacts();
+                //myContacts = ContactsProvider.load(mContext);
+                //System.out.println(myContacts);
             }
         }).start();
+
+
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+
+
+    @Override
+    protected void setAdapterAndDecor(RecyclerView list) {
+        myContacts = ContactsProvider.load(mContext);
+        final StickyTestAdapter adapter = new StickyTestAdapter(myContacts, this.getActivity());
+        decor = new StickyHeaderDecoration(adapter);
+        setHasOptionsMenu(true);
+
+        list.setAdapter(adapter);
+        list.addItemDecoration(decor, 1);
+        list.addOnItemTouchListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add_local_contact) {
+            // TODO: load contact picker
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        // really bad click detection just for demonstration purposes
+        // it will not allow the list to scroll if the swipe motion starts
+        // on top of a header
+        View v = rv.findChildViewUnder(e.getX(), e.getY());
+        return v == null;
+//        return rv.findChildViewUnder(e.getX(), e.getY()) != null;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        // only use the "UP" motion event, discard all others
+        if (e.getAction() != MotionEvent.ACTION_UP) {
+            return;
+        }
+
+        // find the header that was clicked
+        View view = decor.findHeaderViewUnder(e.getX(), e.getY());
+
+        if (view instanceof TextView) {
+            Toast.makeText(this.getActivity(), ((TextView) view).getText() + " clicked", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        // do nothing
+    }
+
+    /*
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        //View view = inflater.inflate(R.layout.fragment_vendors_alpha, container, false);
-
-        /*
-        pDialog = new ProgressDialog(this.getContext());
-        pDialog.setMessage("Reading contacts...");
-        pDialog.setCancelable(false);
-        pDialog.show();
-        updateBarHandler = new Handler();
-        */
-
-
-
-        /*
-        // Set onclicklistener to the list item.
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                //TODO Do whatever you want with the list data
-                Toast.makeText(getActivity().getApplicationContext(), "item clicked : \n"+contactList.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
-
-        //return view;
-
-
-
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_vendors_alpha, container, false);
-
-        // Grab your RecyclerView, RecyclerViewFastScroller, and SectionTitleIndicator from the layout
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        VerticalRecyclerViewFastScroller fastScroller =
-                (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
-        SectionTitleIndicator sectionTitleIndicator =
-                (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
-
-        RecyclerView.Adapter adapter = new ColorfulAdapter(new ColorDataSet());
-        recyclerView.setAdapter(adapter);
-
-        // Connect the recycler to the scroller (to let the scroller scroll the list)
-        fastScroller.setRecyclerView(recyclerView);
-
-        // Connect the scroller to the recycler (to let the recycler scroll the scroller's handle)
-        recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
-
-        // Connect the section indicator to the scroller
-        fastScroller.setSectionIndicator(sectionTitleIndicator);
-
-        setRecyclerViewLayoutManager(recyclerView);
+        View rootView = inflater.inflate(R.layout.fragment_vendors_alpha, container, false);
 
         return rootView;
 
     }
-
-    /**
-     * Set RecyclerView's LayoutManager
-     */
-    public void setRecyclerViewLayoutManager(RecyclerView recyclerView) {
-        int scrollPosition = 0;
-
-        // If a layout manager has already been set, get current scroll position.
-        if (recyclerView.getLayoutManager() != null) {
-            scrollPosition =
-                    ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-        }
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.scrollToPosition(scrollPosition);
-    }
-
-    /*
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Planets, android.R.layout.simple_list_item_1);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.simple_list_item_1, contactList);
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
-    }
     */
 
     /*
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.simple_list_item_1, contactList);
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
-    }
-    */
-
-    /*
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-        Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
-    }
-    */
-
     private void getContacts() {
         ContentResolver contentResolver = getActivity().getContentResolver();
 
@@ -217,5 +178,5 @@ public class VendorsAlphaFragment extends Fragment { //implements OnItemClickLis
         groups_cursor.close();
         dataCursor.close();
     }
-
+    */
 }
