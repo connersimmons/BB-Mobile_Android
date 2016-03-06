@@ -44,7 +44,7 @@ public class VendorsFragment extends Fragment {
 
         /**
          * Workaround:
-         * The setupWithViewPager doesn--Missmnnn't works without the runnable.
+         * The setupWithViewPager doesn't work without the runnable.
          */
         tabLayout.post(new Runnable() {
             @Override

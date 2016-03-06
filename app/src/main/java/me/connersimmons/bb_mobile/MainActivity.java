@@ -67,9 +67,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        /*
         if (id == R.id.action_settings) {
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_projects) {
             fragmentTransaction.replace(R.id.containerView,new ProjectsFragment()).commit();
         } else if (id == R.id.nav_settings) {
-
+            fragmentTransaction.replace(R.id.containerView,new SettingsFragment()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -100,5 +102,10 @@ public class MainActivity extends AppCompatActivity
 
     public void setActionBarTitle(int title) {
         getSupportActionBar().setTitle(title);
+    }
+
+    public void setActionBarIcon(int icon) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(icon);
     }
 }

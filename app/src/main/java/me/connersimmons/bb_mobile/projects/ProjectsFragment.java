@@ -2,6 +2,7 @@ package me.connersimmons.bb_mobile.projects;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import me.connersimmons.bb_mobile.MainActivity;
 import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.adapter.ProjectsPagerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,6 +89,15 @@ public class ProjectsFragment extends Fragment {
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
+
+                /*
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(new NewProjectFragment(), "NewProject").addToBackStack(null).commit();
+                */
+
+                startActivity(new Intent(getActivity(), NewProjectActivity.class));
+
                 return true;
 
             default:
