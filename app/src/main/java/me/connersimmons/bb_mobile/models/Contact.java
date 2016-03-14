@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.model;
+package me.connersimmons.bb_mobile.models;
 
 
 import android.net.Uri;
@@ -33,6 +33,17 @@ public class Contact implements Parcelable, Comparable<Contact> {
     private Uri thumbnail;
 
     public Contact () {
+    }
+
+    public Contact(String id, String name, String company, String phone, String email, String website, String address, String classifications) {
+        this._id = id;
+        this.name = name;
+        this.company = company;
+        this.phoneNumber = phone;
+        this.email = email;
+        this.website = website;
+        this.address = address;
+        this.classifications = classifications;
     }
 
     public String get_id() {

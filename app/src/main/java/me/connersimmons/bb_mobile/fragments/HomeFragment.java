@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile;
+package me.connersimmons.bb_mobile.fragments;
 
 
 import android.os.Bundle;
@@ -7,14 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.activities.MainActivity;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
 
-    public SettingsFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -23,7 +26,12 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
+    }
 }

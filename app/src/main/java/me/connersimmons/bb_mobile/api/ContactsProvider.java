@@ -6,12 +6,10 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import me.connersimmons.bb_mobile.model.Contact;
+import me.connersimmons.bb_mobile.models.Contact;
 
 /**
  * Created by Conner Simmons <cwsimmons149@gmail.com> on 2/27/16.
@@ -50,7 +48,7 @@ public class ContactsProvider {
                     String display_name = cur.getString(2);
                     String groupTitle = getBlueBookGroupTitle(pContext, group_id);
 
-                    System.out.println("Name: " + display_name + ", ID : " + id);
+                    System.out.println("Name: " + display_name + ", ID: " + id + ", Group ID: " + group_id);
 
                     String phone = getPhoneNumber(id, contentResolver);
                     String email = getEmail(id, contentResolver);
@@ -60,7 +58,9 @@ public class ContactsProvider {
                     String website = getWebsite(id, contentResolver);
 
                     if (groupTitle.equals(BB_VENDOR_GROUP_NAME)) {
-                        Contact contact = new Contact();
+                        Contact contact = new Contact(id, display_name, company, phone, email,
+                                website, address, classifications);
+                        /*
                         contact.set_id(id);
                         contact.setName(display_name);
                         contact.setCompany(company);
@@ -69,7 +69,7 @@ public class ContactsProvider {
                         contact.setEmail(email);
                         contact.setPhoneNumber(phone);
                         contact.setClassifications(classifications);
-
+                        */
                         contactsList.add(contact);
                     }
                 }

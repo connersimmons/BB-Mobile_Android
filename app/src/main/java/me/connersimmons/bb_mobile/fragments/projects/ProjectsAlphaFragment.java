@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.projects;
+package me.connersimmons.bb_mobile.fragments.projects;
 
 
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public class ProjectsAlphaFragment extends ListFragment implements OnItemClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_projects_alpha, container, false);
+        return inflater.inflate(R.layout.fragment_projects, container, false);
     }
 
     @Override

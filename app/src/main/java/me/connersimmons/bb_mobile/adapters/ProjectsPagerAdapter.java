@@ -1,15 +1,12 @@
-package me.connersimmons.bb_mobile.adapter;
+package me.connersimmons.bb_mobile.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import me.connersimmons.bb_mobile.projects.ProjectsAlphaFragment;
-import me.connersimmons.bb_mobile.projects.ProjectsCityFragment;
-import me.connersimmons.bb_mobile.projects.ProjectsDateFragment;
-import me.connersimmons.bb_mobile.vendors.VendorsAlphaFragment;
-import me.connersimmons.bb_mobile.vendors.VendorsCityFragment;
-import me.connersimmons.bb_mobile.vendors.VendorsClassificationFragment;
+import me.connersimmons.bb_mobile.fragments.projects.ProjectsAlphaFragment;
+import me.connersimmons.bb_mobile.fragments.projects.ProjectsCityFragment;
+import me.connersimmons.bb_mobile.fragments.projects.ProjectsDateFragment;
 
 /**
  * Created by connersimmons on 2/6/16.
@@ -46,7 +43,7 @@ public class ProjectsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position){
-            case 0 : return "Alphabetical";
+            case 0 : return "A-Z";
             case 1 : return "Date";
             case 2 : return "City";
         }

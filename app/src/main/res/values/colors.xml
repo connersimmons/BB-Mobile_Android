@@ -3,6 +3,9 @@
     <color name="colorPrimary">#00509D</color>
     <color name="colorPrimaryDark">#2D2D94</color>
     <color name="colorAccent">#96BCEA</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="tabsScrollColor">#004D40</color>
 
     <color name="black">#000</color>
     <color name="white">#FFF</color>

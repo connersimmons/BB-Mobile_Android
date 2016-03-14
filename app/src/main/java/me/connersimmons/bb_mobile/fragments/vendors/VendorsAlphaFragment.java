@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.vendors;
+package me.connersimmons.bb_mobile.fragments.vendors;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import android.widget.Toast;
 import java.util.List;
 
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderDecoration;
+import me.connersimmons.bb_mobile.AppConstants;
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.adapter.VendorsAlphaViewAdapter;
-import me.connersimmons.bb_mobile.api.ContactsProvider;
-import me.connersimmons.bb_mobile.model.Contact;
+import me.connersimmons.bb_mobile.adapters.VendorsAlphaViewAdapter;
+import me.connersimmons.bb_mobile.models.Contact;
 import me.connersimmons.bb_mobile.ui.BaseDecorationFragment;
 
 /**
@@ -31,18 +31,21 @@ public class VendorsAlphaFragment extends BaseDecorationFragment implements Recy
 
     private Context mContext;
     private List<Contact> myContacts;
+    private AppConstants constantsInstance;
 
     //HashMap groups;
 
     public VendorsAlphaFragment() {
 
         //groups = new HashMap<String, String>();
+        constantsInstance = AppConstants.getInstance();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*
         //Since reading contacts takes more time, let's run it on a separate thread.
         new Thread(new Runnable() {
             @Override
@@ -50,7 +53,7 @@ public class VendorsAlphaFragment extends BaseDecorationFragment implements Recy
                 myContacts = ContactsProvider.load(mContext);
             }
         }).start();
-
+        */
 
     }
 
@@ -64,7 +67,8 @@ public class VendorsAlphaFragment extends BaseDecorationFragment implements Recy
 
     @Override
     protected void setAdapterAndDecor(RecyclerView list) {
-        myContacts = ContactsProvider.load(mContext);
+        //myContacts = ContactsProvider.load(mContext);
+        myContacts = constantsInstance.getContactsList();
         final VendorsAlphaViewAdapter adapter = new VendorsAlphaViewAdapter(myContacts, this.getActivity());
         decor = new StickyHeaderDecoration(adapter);
         setHasOptionsMenu(true);

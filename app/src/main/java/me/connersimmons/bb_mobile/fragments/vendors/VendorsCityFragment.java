@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.vendors;
+package me.connersimmons.bb_mobile.fragments.vendors;
 
 
 import android.content.Context;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import me.connersimmons.bb_mobile.R;
 import me.connersimmons.bb_mobile.api.ContactsProvider;
-import me.connersimmons.bb_mobile.model.Contact;
+import me.connersimmons.bb_mobile.models.Contact;
 
 
 /**
@@ -56,7 +56,7 @@ public class VendorsCityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        rootView = inflater.inflate(R.layout.fragment_vendors_city, container, false);
+        rootView = inflater.inflate(R.layout.fragment_vendors, container, false);
 
         return rootView;
     }

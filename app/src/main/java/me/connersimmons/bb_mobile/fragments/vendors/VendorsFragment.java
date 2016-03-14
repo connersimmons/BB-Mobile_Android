@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile;
+package me.connersimmons.bb_mobile.fragments.vendors;
 
 
 import android.os.Bundle;
@@ -7,28 +7,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import me.connersimmons.bb_mobile.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class VendorsFragment extends Fragment {
 
-
-    public HomeFragment() {
+    public VendorsFragment() {
         // Required empty public constructor
     }
 
+    public static VendorsFragment newInstance() {
+        return new VendorsFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity) getActivity()).setActionBarTitle(R.string.app_name);
+        // Inflate tab_layout and setup Views.
+        View view = inflater.inflate(R.layout.fragment_vendors, container, false);;
+
+        return view;
     }
 }

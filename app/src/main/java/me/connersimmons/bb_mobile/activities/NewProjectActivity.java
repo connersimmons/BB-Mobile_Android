@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.projects;
+package me.connersimmons.bb_mobile.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.fragments.projects.NewProjectFragment;
 
 
 public class NewProjectActivity extends AppCompatActivity implements
@@ -19,6 +21,9 @@ public class NewProjectActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         setContentView(R.layout.activity_new_project);
         if (savedInstanceState == null) {
             createFullScreenDialog();
@@ -32,7 +37,6 @@ public class NewProjectActivity extends AppCompatActivity implements
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.add(android.R.id.content, newFragment, "FullScreenFragment")
-                .addToBackStack(null)
                 .commit();
     }
 
@@ -42,7 +46,7 @@ public class NewProjectActivity extends AppCompatActivity implements
 
         NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag("FullScreenFragment");
         if (fragment != null) {
-            fragment.setDateView(year, monthOfYear, dayOfMonth);
+            //fragment.setDateView(year, monthOfYear, dayOfMonth);
         }
     }
 
@@ -50,7 +54,7 @@ public class NewProjectActivity extends AppCompatActivity implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag("FullScreenFragment");
         if (fragment != null) {
-            fragment.setTimeView(hourOfDay, minute);
+            //fragment.setTimeView(hourOfDay, minute);
         }
     }
 }

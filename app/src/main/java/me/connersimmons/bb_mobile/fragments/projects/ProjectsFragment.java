@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.projects;
+package me.connersimmons.bb_mobile.fragments.projects;
 
 
 import android.os.Bundle;
@@ -12,19 +12,29 @@ import me.connersimmons.bb_mobile.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProjectsCityFragment extends Fragment {
+public class ProjectsFragment extends Fragment {
 
+    public static String TAG = "ProjectsFragment";
 
-    public ProjectsCityFragment() {
+    public ProjectsFragment() {
         // Required empty public constructor
     }
 
+    public static final ProjectsFragment newInstance() {
+        return new ProjectsFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_projects_city, container, false);
+
+        // Inflate tab_layout and setup Views.
+        View view = inflater.inflate(R.layout.fragment_projects, container, false);;
+
+
+
+        return view;
     }
+
 
 }

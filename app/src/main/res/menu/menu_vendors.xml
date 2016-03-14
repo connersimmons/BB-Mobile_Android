@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".vendors.VendorsActivity">
+    tools:context=".activities.VendorsActivity">
 
     <!-- "Add Local Contact", should appear as action button if possible -->
     <item

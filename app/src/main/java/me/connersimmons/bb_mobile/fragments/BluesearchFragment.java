@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile;
+package me.connersimmons.bb_mobile.fragments;
 
 
 import android.content.ContentResolver;
@@ -23,6 +23,8 @@ import java.util.List;
 
 import ezvcard.Ezvcard;
 import ezvcard.VCard;
+import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.activities.MainActivity;
 import me.connersimmons.bb_mobile.api.ContactAPI;
 
 
@@ -33,7 +35,8 @@ public class BluesearchFragment extends Fragment {
 
     private static final String WEBSITE_URL = "http://www.thebluebook.com/";
     //private static final String VCARD_URL = "http://www.cs.scranton.edu/~simmonsc3/vcard.vcf";
-    private static final String VCARD_URL = "http://www.cs.scranton.edu/~simmonsc3/vCardXtreme.vcf";
+    //private static final String VCARD_URL = "http://www.cs.scranton.edu/~simmonsc3/vCardXtreme.vcf";
+    private static final String VCARD_URL = "http://qa.thebluebook.com/tools/vcard-exporter.php?account=197684|0,209961|1,236588|0";
     String pageContents;
 
     public BluesearchFragment() {

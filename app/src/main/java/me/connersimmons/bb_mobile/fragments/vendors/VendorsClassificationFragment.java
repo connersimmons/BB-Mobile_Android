@@ -1,15 +1,7 @@
-package me.connersimmons.bb_mobile.vendors;
+package me.connersimmons.bb_mobile.fragments.vendors;
 
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import me.connersimmons.bb_mobile.R;
 
 
 /**
@@ -30,7 +22,7 @@ public class VendorsClassificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_vendors_classification, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_vendors, container, false);
         // Inflate the layout for this fragment
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

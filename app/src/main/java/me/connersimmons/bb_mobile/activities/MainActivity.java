@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile;
+package me.connersimmons.bb_mobile.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -6,14 +6,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import me.connersimmons.bb_mobile.projects.ProjectsFragment;
-import me.connersimmons.bb_mobile.vendors.VendorsFragment;
+import me.connersimmons.bb_mobile.AppConstants;
+import me.connersimmons.bb_mobile.fragments.BluesearchFragment;
+import me.connersimmons.bb_mobile.fragments.HomeFragment;
+import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.fragments.SettingsFragment;
+import me.connersimmons.bb_mobile.api.ContactsProvider;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,17 +26,27 @@ public class MainActivity extends AppCompatActivity
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
 
+    AppConstants mConstantsInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -39,7 +54,18 @@ public class MainActivity extends AppCompatActivity
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.containerView, new HomeFragment()).commit();
+        mFragmentTransaction.replace(R.id.mainContainerView, new HomeFragment()).commit();
+
+        mConstantsInstance = AppConstants.getInstance();
+
+        //Since reading contacts takes more time, let's run it on a separate thread.
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mConstantsInstance.setContactsList(ContactsProvider.load(getApplicationContext()));
+                //constantsInstance.s = ContactsProvider.load(mContext);
+            }
+        }).start();
     }
 
     @Override
@@ -84,15 +110,17 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
         if (id == R.id.nav_home) {
-            fragmentTransaction.replace(R.id.containerView,new HomeFragment()).commit();
+            fragmentTransaction.replace(R.id.mainContainerView,new HomeFragment()).commit();
         } else if (id == R.id.nav_search) {
-            fragmentTransaction.replace(R.id.containerView,new BluesearchFragment()).commit();
+            fragmentTransaction.replace(R.id.mainContainerView,new BluesearchFragment()).commit();
         } else if (id == R.id.nav_vendors) {
-            fragmentTransaction.replace(R.id.containerView,new VendorsFragment()).commit();
+            //fragmentTransaction.replace(R.id.mainContainerView,new VendorsFragment()).commit();
+            VendorsActivity.startActivity(this);
         } else if (id == R.id.nav_projects) {
-            fragmentTransaction.replace(R.id.containerView,new ProjectsFragment()).commit();
+            //fragmentTransaction.replace(R.id.containerView,new ProjectsFragment()).commit();
+            ProjectsActivity.startActivity(this);
         } else if (id == R.id.nav_settings) {
-            fragmentTransaction.replace(R.id.containerView,new SettingsFragment()).commit();
+            fragmentTransaction.replace(R.id.mainContainerView,new SettingsFragment()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

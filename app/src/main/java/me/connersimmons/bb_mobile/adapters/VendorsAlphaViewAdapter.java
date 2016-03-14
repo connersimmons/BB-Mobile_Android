@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.connersimmons.bb_mobile.adapter;
+package me.connersimmons.bb_mobile.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +29,7 @@ import java.util.List;
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
 import me.connersimmons.bb_mobile.CompanyComparator;
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.model.Contact;
+import me.connersimmons.bb_mobile.models.Contact;
 
 public class VendorsAlphaViewAdapter extends RecyclerView.Adapter<VendorsAlphaViewAdapter.ViewHolder> implements
         StickyHeaderAdapter<VendorsAlphaViewAdapter.HeaderHolder> {

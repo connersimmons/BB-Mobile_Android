@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.projects;
+package me.connersimmons.bb_mobile.fragments.projects;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import me.connersimmons.bb_mobile.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProjectsDateFragment extends Fragment {
+public class ProjectsCityFragment extends Fragment {
 
 
-    public ProjectsDateFragment() {
+    public ProjectsCityFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class ProjectsDateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_projects_date, container, false);
+        return inflater.inflate(R.layout.fragment_projects, container, false);
     }
 
 }
