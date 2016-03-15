@@ -114,10 +114,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_search) {
             fragmentTransaction.replace(R.id.mainContainerView,new BluesearchFragment()).commit();
         } else if (id == R.id.nav_vendors) {
-            //fragmentTransaction.replace(R.id.mainContainerView,new VendorsFragment()).commit();
             VendorsActivity.startActivity(this);
         } else if (id == R.id.nav_projects) {
-            //fragmentTransaction.replace(R.id.containerView,new ProjectsFragment()).commit();
             ProjectsActivity.startActivity(this);
         } else if (id == R.id.nav_settings) {
             fragmentTransaction.replace(R.id.mainContainerView,new SettingsFragment()).commit();
@@ -130,10 +128,5 @@ public class MainActivity extends AppCompatActivity
 
     public void setActionBarTitle(int title) {
         getSupportActionBar().setTitle(title);
-    }
-
-    public void setActionBarIcon(int icon) {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(icon);
     }
 }

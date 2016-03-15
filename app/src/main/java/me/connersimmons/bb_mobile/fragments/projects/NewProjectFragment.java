@@ -27,8 +27,11 @@ import com.quemb.qmbform.descriptor.RowDescriptor;
 import com.quemb.qmbform.descriptor.SectionDescriptor;
 import com.quemb.qmbform.descriptor.Value;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import me.connersimmons.bb_mobile.AppConstants;
 import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.models.Project;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,17 +44,18 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
     private HashMap<String, Value<?>> mChangesMap;
     private MenuItem mSaveMenuItem;
 
-    public static String TAG = "NewProjectFragment";
+    public static String TAG = NewProjectFragment.class.getName();
     private FormDescriptor mFormDescriptor;
     private FormManager mFormManager;
+
+    private Realm realm;
 
     public NewProjectFragment() {
         // Required empty public constructor
     }
 
     public static final NewProjectFragment newInstance() {
-        NewProjectFragment f = new NewProjectFragment();
-        return f;
+        return new NewProjectFragment();
     }
 
     @Override
@@ -65,6 +69,8 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         }
+
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -237,14 +243,17 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        updateSaveItem();
+        setSaveItemVisibility();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item == mSaveMenuItem){
+
+            createNewProject();
+
             mChangesMap.clear();
-            updateSaveItem();
+            setSaveItemVisibility();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -260,13 +269,21 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
 
         mChangesMap.put(rowDescriptor.getTag(), newValue);
 
-        updateSaveItem();
+        setSaveItemVisibility();
     }
 
-    private void updateSaveItem() {
+    private void setSaveItemVisibility() {
         if (mSaveMenuItem != null){
             mSaveMenuItem.setVisible(mChangesMap.size() > 0);
         }
+    }
+
+    private void createNewProject() {
+        realm.beginTransaction();
+        Project project = realm.createObject(Project.class); // Create a new object
+        System.out.print("Project address: " + mChangesMap.get("address").getValue().toString());
+        //project.setAddress(mChangesMap.get("address").getValue().toString());
+        realm.commitTransaction();
     }
 
     private class CustomTask extends AsyncTask<DataSourceListener, Void, ArrayList<String>> {

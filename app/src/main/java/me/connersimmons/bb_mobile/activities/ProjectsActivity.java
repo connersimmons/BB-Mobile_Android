@@ -12,10 +12,15 @@ import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.activities.base.BaseActivity;
 import me.connersimmons.bb_mobile.adapters.ProjectsPagerAdapter;
 
-public class ProjectsActivity extends AppCompatActivity {
+public class ProjectsActivity extends BaseActivity {
+
+
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, ProjectsActivity.class);
@@ -36,32 +41,18 @@ public class ProjectsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-
                 createNewProject();
             }
         });
 
-
-
         ViewPager viewPager = (ViewPager) findViewById(R.id.projectsViewPager);
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
-        //demo.setup(viewPagerTab);
 
-        /*
-        FragmentPagerItems pages = new FragmentPagerItems(this);
-        for (int titleResId : demo.tabs()) {
-            pages.add(FragmentPagerItem.of(getString(titleResId), DemoFragment.class));
-        }
+        ProjectsPagerAdapter projectsPagerAdapter = new ProjectsPagerAdapter(getSupportFragmentManager());
+        projectsPagerAdapter.setup(viewPagerTab);
 
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), pages);
-        */
-
-        viewPager.setAdapter(new ProjectsPagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(projectsPagerAdapter);
         viewPagerTab.setViewPager(viewPager);
-
     }
 
     private void createNewProject() {

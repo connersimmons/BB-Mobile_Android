@@ -12,7 +12,7 @@
     app:stl_distributeEvenly="true"
     app:stl_indicatorCornerRadius="1.5dp"
     app:stl_indicatorInterpolation="smart"
-    app:stl_indicatorThickness="3dp"
+    app:stl_indicatorThickness="4dp"
     app:stl_drawDecorationAfterTab="true"
     app:stl_underlineColor="@color/transparent"
     />

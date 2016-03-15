@@ -43,7 +43,10 @@ public class VendorsActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.vendorsViewPager);
         SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
 
-        viewPager.setAdapter(new VendorsPagerAdapter(getSupportFragmentManager()));
+        VendorsPagerAdapter vendorsPagerAdapter = new VendorsPagerAdapter(getSupportFragmentManager());
+        vendorsPagerAdapter.setup(viewPagerTab);
+
+        viewPager.setAdapter(vendorsPagerAdapter);
         viewPagerTab.setViewPager(viewPager);
     }
 

@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import me.connersimmons.bb_mobile.R;
 import me.connersimmons.bb_mobile.fragments.projects.NewProjectFragment;
 
@@ -44,7 +46,7 @@ public class NewProjectActivity extends AppCompatActivity implements
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag("FullScreenFragment");
+        NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag(NewProjectFragment.class.getName());
         if (fragment != null) {
             //fragment.setDateView(year, monthOfYear, dayOfMonth);
         }
@@ -52,9 +54,15 @@ public class NewProjectActivity extends AppCompatActivity implements
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag("FullScreenFragment");
+        NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag(NewProjectFragment.class.getName());
         if (fragment != null) {
             //fragment.setTimeView(hourOfDay, minute);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }
