@@ -13,13 +13,13 @@ public class Project extends RealmObject {
 
     @PrimaryKey
     private String id;
-    @Required
+    //@Required
     private String address;
-    @Required
+    //@Required
     private Date bidsDue;
     private double bidSecurity;
     private boolean bim;
-    @Required
+    //@Required
     private String city;
     private String contractNo;
     private Date endDate;
@@ -27,31 +27,31 @@ public class Project extends RealmObject {
     private boolean leed;
     private boolean nonunion;
     private int numBuildings;
-    @Required
+    //@Required
     private String owner;
     private double paymentBond;
     private double performanceBond;
-    @Required
+    //@Required
     private Date preBidMeeting;
     private boolean prevailingWage;
     private String scope;
     private double squareFootage;
     private Date startDate;
-    @Required
+    //@Required
     private String state;
-    @Required
+    //@Required
     private String status;
     private int storiesAboveGrade;
     private int storiesBelowGrade;
-    @Required
+    //@Required
     private String structure;
-    @Required
+    //@Required
     private String title;
-    @Required
+    //@Required
     private String type;
     private boolean union;
     private double valuation;
-    @Required
+    //@Required
     private String zip;
 
     public String getId() {

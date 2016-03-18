@@ -30,16 +30,10 @@ dependencies {
 
     compile project(":lib:QMBForm")
 
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.android.support:support-v4:23.2.0'
-
-    // Third-party libraries
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
     compile 'com.googlecode.ez-vcard:ez-vcard:0.9.9'
     compile 'ca.barrenechea.header-decor:header-decor:0.2.6'
-
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0'
-    //compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.0'
-    //compile 'com.ogaclejapan.smarttablayout:utils-v13:1.6.0'
-
 }

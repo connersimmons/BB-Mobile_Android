@@ -1,8 +1,11 @@
 package me.connersimmons.bb_mobile.presenters.impl;
 
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
+import me.connersimmons.bb_mobile.activities.NewProjectActivity;
 import me.connersimmons.bb_mobile.activities.ProjectsActivity;
+import me.connersimmons.bb_mobile.fragments.base.BaseFragment;
 import me.connersimmons.bb_mobile.models.Project;
 import me.connersimmons.bb_mobile.presenters.IProjectPresenter;
 import me.connersimmons.bb_mobile.realm.repository.IProjectRepository;
@@ -74,7 +77,7 @@ public class ProjectPresenter implements IProjectPresenter {
         onGetAllProjectsCallback = new IProjectRepository.OnGetAllProjectsCallback() {
             @Override
             public void onSuccess(RealmResults<Project> projects) {
-
+                view.showProjects(projects);
             }
 
             @Override

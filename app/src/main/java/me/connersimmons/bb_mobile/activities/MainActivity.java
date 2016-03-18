@@ -1,6 +1,7 @@
 package me.connersimmons.bb_mobile.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,22 +11,32 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import me.connersimmons.bb_mobile.AppConstants;
 import me.connersimmons.bb_mobile.fragments.BluesearchFragment;
 import me.connersimmons.bb_mobile.fragments.HomeFragment;
 import me.connersimmons.bb_mobile.R;
 import me.connersimmons.bb_mobile.fragments.SettingsFragment;
 import me.connersimmons.bb_mobile.api.ContactsProvider;
+import me.connersimmons.bb_mobile.fragments.vendors.VendorsTabLayoutFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+
+    NavigationView mNavigationView;
+    Toolbar mToolbar;
+
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
 
+    private AppBarLayout mAppBarLayout;
     AppConstants mConstantsInstance;
 
     @Override
@@ -33,39 +44,56 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mConstantsInstance = AppConstants.getInstance();
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        /*
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             ab.setDisplayHomeAsUpEnabled(true);
         }
+        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.mainContainerView, new HomeFragment()).commit();
+        initialFragmentSetup();
 
-        mConstantsInstance = AppConstants.getInstance();
+        realmDatabaseSetup();
+
 
         //Since reading contacts takes more time, let's run it on a separate thread.
         new Thread(new Runnable() {
             @Override
             public void run() {
                 mConstantsInstance.setContactsList(ContactsProvider.load(getApplicationContext()));
-                //constantsInstance.s = ContactsProvider.load(mContext);
             }
         }).start();
+    }
+
+    private void initialFragmentSetup() {
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.mainContainerView, new HomeFragment()).commit();
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    private void realmDatabaseSetup() {
+        //Realm.removeDefaultConfiguration();
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(realmConfiguration);
+
+        Log.d(MainActivity.class.getName(), "REALM CONFIGURED!");
     }
 
     @Override
@@ -102,23 +130,28 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
 
         if (id == R.id.nav_home) {
-            fragmentTransaction.replace(R.id.mainContainerView,new HomeFragment()).commit();
+            setActionBarElevation(mConstantsInstance.getDefaultElevation());
+            mFragmentTransaction.replace(R.id.mainContainerView,new HomeFragment()).commit();
         } else if (id == R.id.nav_search) {
-            fragmentTransaction.replace(R.id.mainContainerView,new BluesearchFragment()).commit();
+            setActionBarElevation(mConstantsInstance.getZeroElevation());
+            mFragmentTransaction.replace(R.id.mainContainerView,new BluesearchFragment()).commit();
         } else if (id == R.id.nav_vendors) {
-            VendorsActivity.startActivity(this);
+            setActionBarElevation(mConstantsInstance.getZeroElevation());
+            mFragmentTransaction.replace(R.id.mainContainerView,new VendorsTabLayoutFragment()).commit();
+            //VendorsActivity.startActivity(this);
         } else if (id == R.id.nav_projects) {
+            setActionBarElevation(mConstantsInstance.getZeroElevation());
             ProjectsActivity.startActivity(this);
         } else if (id == R.id.nav_settings) {
-            fragmentTransaction.replace(R.id.mainContainerView,new SettingsFragment()).commit();
+            setActionBarElevation(mConstantsInstance.getDefaultElevation());
+            mFragmentTransaction.replace(R.id.mainContainerView,new SettingsFragment()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -128,5 +161,10 @@ public class MainActivity extends AppCompatActivity
 
     public void setActionBarTitle(int title) {
         getSupportActionBar().setTitle(title);
+    }
+
+    public void setActionBarElevation(int elevation) {
+        mAppBarLayout=(AppBarLayout) findViewById(R.id.appbar);
+        mAppBarLayout.setElevation(elevation);
     }
 }

@@ -13,6 +13,10 @@ public class AppConstants {
 
     private static AppConstants instance = null;
 
+    // AppBar Elevations
+    final int ELEVATION_DEFAULT = 4;
+    final int ELEVATION_ZERO = 0;
+
     // Array of states
     static ArrayList<String> statesArray = new ArrayList<>(Arrays.asList("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska","Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming", "Alberta"));
 
@@ -67,5 +71,13 @@ public class AppConstants {
 
     public static void setContactsList(List<Contact> contactsList) {
         AppConstants.contactsList = contactsList;
+    }
+
+    public int getDefaultElevation() {
+        return ELEVATION_DEFAULT;
+    }
+
+    public int getZeroElevation() {
+        return ELEVATION_ZERO;
     }
 }

@@ -3,6 +3,7 @@ package me.connersimmons.bb_mobile.realm.repository.impl;
 import java.util.UUID;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import me.connersimmons.bb_mobile.models.Project;
 import me.connersimmons.bb_mobile.realm.repository.IProjectRepository;
@@ -13,17 +14,11 @@ import me.connersimmons.bb_mobile.realm.table.RealmTable;
  */
 public class ProjectRepository implements IProjectRepository {
 
-    private Realm mRealm;
-
-    public ProjectRepository() {
-        mRealm = Realm.getDefaultInstance();
-    }
-
     @Override
     public void addProject(Project project, OnSaveProjectCallback callback) {
-        //Realm realm = Realm.getDefaultInstance();
-        mRealm.beginTransaction();
-        Project realmProject = mRealm.createObject(Project.class);
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Project realmProject = realm.createObject(Project.class);
 
         realmProject.setId(UUID.randomUUID().toString());
         realmProject.setAddress(project.getAddress());
@@ -33,7 +28,7 @@ public class ProjectRepository implements IProjectRepository {
         realmProject.setCity(project.getCity());
         realmProject.setContractNo(project.getContractNo());
         realmProject.setEndDate(project.getEndDate());
-        realmProject.setIsOutForBid(project.isOutForBid());
+        //realmProject.setIsOutForBid(project.isOutForBid());
         realmProject.setLeed(project.isLeed());
         realmProject.setNonunion(project.isNonunion());
         realmProject.setNumBuildings(project.getNumBuildings());
@@ -56,7 +51,7 @@ public class ProjectRepository implements IProjectRepository {
         realmProject.setValuation(project.getValuation());
         realmProject.setZip(project.getZip());
 
-        mRealm.commitTransaction();
+        realm.commitTransaction();
 
         if (callback != null)
             callback.onSuccess();
@@ -64,10 +59,11 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void deleteProjectById(String id, OnDeleteProjectCallback callback) {
-        mRealm.beginTransaction();
-        Project result = mRealm.where(Project.class).equalTo(RealmTable.Project.ID, id).findFirst();
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Project result = realm.where(Project.class).equalTo(RealmTable.Project.ID, id).findFirst();
         result.removeFromRealm();
-        mRealm.commitTransaction();
+        realm.commitTransaction();
 
         if (callback != null)
             callback.onSuccess();
@@ -75,7 +71,8 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void getAllProjects(OnGetAllProjectsCallback callback) {
-        RealmResults<Project> results = mRealm.where(Project.class).findAll();
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<Project> results = realm.where(Project.class).findAll();
 
         if (callback != null)
             callback.onSuccess(results);
@@ -83,7 +80,8 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void getProjectById(String id, OnGetProjectByIdCallback callback) {
-        Project student = mRealm.where(Project.class).equalTo(RealmTable.Project.ID, id).findFirst();
+        Realm realm = Realm.getDefaultInstance();
+        Project student = realm.where(Project.class).equalTo(RealmTable.Project.ID, id).findFirst();
 
         if (callback != null)
             callback.onSuccess(student);

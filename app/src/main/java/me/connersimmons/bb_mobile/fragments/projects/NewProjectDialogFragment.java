@@ -1,6 +1,7 @@
 package me.connersimmons.bb_mobile.fragments.projects;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,34 +29,45 @@ import com.quemb.qmbform.descriptor.SectionDescriptor;
 import com.quemb.qmbform.descriptor.Value;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import me.connersimmons.bb_mobile.AppConstants;
 import me.connersimmons.bb_mobile.R;
+import me.connersimmons.bb_mobile.activities.NewProjectActivity;
 import me.connersimmons.bb_mobile.models.Project;
+import me.connersimmons.bb_mobile.utils.DateFormatter;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class NewProjectFragment extends DialogFragment implements OnFormRowValueChangedListener,
+public class NewProjectDialogFragment extends DialogFragment implements OnFormRowValueChangedListener,
         OnFormRowClickListener {
+
+    private NewProjectActivity activity;
 
     private ListView mListView;
     private HashMap<String, Value<?>> mChangesMap;
     private MenuItem mSaveMenuItem;
 
-    public static String TAG = NewProjectFragment.class.getName();
+    public static String TAG = NewProjectDialogFragment.class.getName();
     private FormDescriptor mFormDescriptor;
     private FormManager mFormManager;
 
     private Realm realm;
+    private OnAddStudentClickListener listener;
 
-    public NewProjectFragment() {
+    public NewProjectDialogFragment() {
         // Required empty public constructor
     }
 
-    public static final NewProjectFragment newInstance() {
-        return new NewProjectFragment();
+    public static final NewProjectDialogFragment newInstance() {
+        return new NewProjectDialogFragment();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (NewProjectActivity) activity;
     }
 
     @Override
@@ -70,7 +82,7 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
             actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         }
 
-        realm = Realm.getDefaultInstance();
+        //realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -250,10 +262,19 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item == mSaveMenuItem){
 
-            createNewProject();
+            Project newProject = createNewProject();
 
             mChangesMap.clear();
-            setSaveItemVisibility();
+            //setSaveItemVisibility();
+
+            Log.d(TAG, "PROJECT BEING CREATED: " + newProject.getTitle());
+            activity.setProject(newProject);
+
+            listener.onAddStudentClickListener(newProject);
+
+            //Close fragment and activity
+            this.dismiss();
+            getActivity().finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -278,12 +299,111 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
         }
     }
 
-    private void createNewProject() {
-        realm.beginTransaction();
-        Project project = realm.createObject(Project.class); // Create a new object
-        System.out.print("Project address: " + mChangesMap.get("address").getValue().toString());
-        //project.setAddress(mChangesMap.get("address").getValue().toString());
-        realm.commitTransaction();
+    private Project createNewProject() {
+
+        //Log.d(TAG, "Project title: " + mChangesMap.get("title").getValue().toString());
+
+        Project project = new Project();
+
+        project.setAddress(getValueByTag("address"));
+
+        if (getValueByTag("bidsDueDateDialog") != null && getValueByTag("bidsDueTimeDialog") != null) {
+            project.setBidsDue(DateFormatter.convertStringToDateTime(getValueByTag("bidsDueDateDialog"), getValueByTag("bidsDueTimeDialog")));
+        }
+
+        if (getValueByTag("bidSecurity") != null) {
+            project.setBidSecurity(Double.parseDouble(getValueByTag("bidSecurity")));
+        }
+
+        if (getValueByTag("bim") != null) {
+            project.setBim(Boolean.parseBoolean(getValueByTag("bim")));
+        }
+
+        project.setCity(getValueByTag("city"));
+        project.setContractNo(getValueByTag("contractNo"));
+
+        if (getValueByTag("endDateDialog") != null) {
+            project.setEndDate(DateFormatter.convertStringToDate(getValueByTag("endDateDialog")));
+        }
+
+        //project.setIsOutForBid(Boolean.parseBoolean(getValueByTag("isOutForBid")));
+
+        if (getValueByTag("leed") != null) {
+            project.setLeed(Boolean.parseBoolean(getValueByTag("leed")));
+        }
+
+        if (getValueByTag("nonunion") != null) {
+            project.setNonunion(Boolean.parseBoolean(getValueByTag("nonunion")));
+        }
+
+        if (getValueByTag("numBuildings") != null) {
+            project.setNumBuildings(Integer.parseInt(getValueByTag("numBuildings")));
+        }
+
+        project.setOwner(getValueByTag("ownerPicker"));
+
+        if (getValueByTag("paymentBond") != null) {
+            project.setPaymentBond(Double.parseDouble(getValueByTag("paymentBond")));
+        }
+
+        if (getValueByTag("performanceBond") != null) {
+            project.setPerformanceBond(Double.parseDouble(getValueByTag("performanceBond")));
+        }
+
+        if (getValueByTag("preBidDateDialog") != null && getValueByTag("preBidTimeDialog") != null) {
+            project.setPreBidMeeting(DateFormatter.convertStringToDateTime(getValueByTag("preBidDateDialog"), getValueByTag("preBidTimeDialog")));
+        }
+
+        if (getValueByTag("prevailingWage") != null) {
+            project.setPrevailingWage(Boolean.parseBoolean(getValueByTag("prevailingWage")));
+        }
+
+        project.setScope(getValueByTag("scope"));
+
+        if (getValueByTag("totalSqft") != null) {
+            project.setSquareFootage(Double.parseDouble(getValueByTag("totalSqft")));
+        }
+
+        if (getValueByTag("startDateDialog") != null) {
+            project.setStartDate(DateFormatter.convertStringToDate(getValueByTag("startDateDialog")));
+        }
+
+        project.setState(getValueByTag("statePicker"));
+        project.setStatus(getValueByTag("statusPicker"));
+
+        if (getValueByTag("storiesAbove") != null) {
+            project.setStoriesAboveGrade(Integer.parseInt(getValueByTag("storiesAbove")));
+        }
+
+        if (getValueByTag("storiesBelow") != null) {
+            project.setStoriesBelowGrade(Integer.parseInt(getValueByTag("storiesBelow")));
+        }
+
+        project.setStructure(getValueByTag("structurePicker"));
+        project.setTitle(getValueByTag("title"));
+        project.setType(getValueByTag("typePicker"));
+
+        if (getValueByTag("union") != null) {
+            project.setUnion(Boolean.parseBoolean(getValueByTag("union")));
+        }
+
+        if (getValueByTag("valuation") != null) {
+            project.setValuation(Double.parseDouble(getValueByTag("valuation")));
+        }
+
+        project.setZip(getValueByTag("zip"));
+
+        //listener.onAddStudentClickListener(project);
+
+        return project;
+    }
+
+    private String getValueByTag(String tag) {
+        String result = null;
+        if (mChangesMap.keySet().contains(tag)) {
+            result = mChangesMap.get(tag).getValue().toString();
+        }
+        return result;
     }
 
     private class CustomTask extends AsyncTask<DataSourceListener, Void, ArrayList<String>> {
@@ -329,5 +449,13 @@ public class NewProjectFragment extends DialogFragment implements OnFormRowValue
             mProgressDialog.dismiss();
             mListener.onDataSourceLoaded(strings);
         }
+    }
+
+    public void setListener(OnAddStudentClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnAddStudentClickListener {
+        void onAddStudentClickListener(Project student);
     }
 }

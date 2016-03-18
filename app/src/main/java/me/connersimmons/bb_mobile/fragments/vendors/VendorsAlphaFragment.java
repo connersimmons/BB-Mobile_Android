@@ -2,10 +2,13 @@ package me.connersimmons.bb_mobile.fragments.vendors;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +26,7 @@ import me.connersimmons.bb_mobile.ui.BaseDecorationFragment;
  */
 public class VendorsAlphaFragment extends BaseDecorationFragment implements RecyclerView.OnItemTouchListener {
 
-    private static final String TAG = "VENDORS_ALPHA_FRAGMENT";
+    private static final String TAG = VendorsAlphaFragment.class.getName();
     private static final String BB_VENDOR_GROUP_NAME = "MyBlueBookVendors";
 
     private StickyHeaderDecoration decor;

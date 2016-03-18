@@ -6,27 +6,33 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.fragments.projects.NewProjectFragment;
+import me.connersimmons.bb_mobile.activities.base.BaseActivity;
+import me.connersimmons.bb_mobile.fragments.projects.NewProjectDialogFragment;
+import me.connersimmons.bb_mobile.models.Project;
+import me.connersimmons.bb_mobile.presenters.IProjectPresenter;
+import me.connersimmons.bb_mobile.presenters.impl.ProjectPresenter;
 
 
-public class NewProjectActivity extends AppCompatActivity implements
+public class NewProjectActivity extends BaseActivity implements
         DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener {
+
+    private Project newProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_project);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        setContentView(R.layout.activity_new_project);
         if (savedInstanceState == null) {
             createFullScreenDialog();
         }
@@ -34,19 +40,35 @@ public class NewProjectActivity extends AppCompatActivity implements
 
     private void createFullScreenDialog() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        NewProjectFragment newFragment = new NewProjectFragment();
+        final NewProjectDialogFragment newFragment = new NewProjectDialogFragment();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.add(android.R.id.content, newFragment, "FullScreenFragment")
+        transaction.add(android.R.id.content, newFragment, NewProjectDialogFragment.class.getName())
                 .commit();
+
+        newFragment.setListener(new NewProjectDialogFragment.OnAddStudentClickListener() {
+            @Override
+            public void onAddStudentClickListener(Project project) {
+                //newFragment.dismiss();
+
+                Log.d(NewProjectActivity.class.getName(), "NEW PROJECT: " + newProject.getTitle());
+                ProjectsActivity.getPresenter().addProject(newProject);
+
+                //presenter.addStudentByUniversityId(student, universityId);
+                //presenter.getAllStudentsByUniversityId(universityId);
+            }
+        });
     }
 
+    public void setProject(Project project) {
+        this.newProject = project;
+    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-        NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag(NewProjectFragment.class.getName());
+        NewProjectDialogFragment fragment = (NewProjectDialogFragment) getSupportFragmentManager().findFragmentByTag(NewProjectDialogFragment.class.getName());
         if (fragment != null) {
             //fragment.setDateView(year, monthOfYear, dayOfMonth);
         }
@@ -54,15 +76,10 @@ public class NewProjectActivity extends AppCompatActivity implements
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        NewProjectFragment fragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag(NewProjectFragment.class.getName());
+        NewProjectDialogFragment fragment = (NewProjectDialogFragment) getSupportFragmentManager().findFragmentByTag(NewProjectDialogFragment.class.getName());
         if (fragment != null) {
             //fragment.setTimeView(hourOfDay, minute);
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
 }
