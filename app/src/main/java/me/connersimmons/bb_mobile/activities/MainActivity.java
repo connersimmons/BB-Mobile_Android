@@ -7,22 +7,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import me.connersimmons.bb_mobile.AppConstants;
+import me.connersimmons.bb_mobile.utils.AppConstants;
 import me.connersimmons.bb_mobile.fragments.BluesearchFragment;
 import me.connersimmons.bb_mobile.fragments.HomeFragment;
 import me.connersimmons.bb_mobile.R;
 import me.connersimmons.bb_mobile.fragments.SettingsFragment;
 import me.connersimmons.bb_mobile.api.ContactsProvider;
+import me.connersimmons.bb_mobile.fragments.projects.ProjectsTabLayoutFragment;
 import me.connersimmons.bb_mobile.fragments.vendors.VendorsTabLayoutFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -69,9 +66,6 @@ public class MainActivity extends AppCompatActivity
 
         initialFragmentSetup();
 
-        realmDatabaseSetup();
-
-
         //Since reading contacts takes more time, let's run it on a separate thread.
         new Thread(new Runnable() {
             @Override
@@ -86,14 +80,6 @@ public class MainActivity extends AppCompatActivity
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.mainContainerView, new HomeFragment()).commit();
         mNavigationView.getMenu().getItem(0).setChecked(true);
-    }
-
-    private void realmDatabaseSetup() {
-        //Realm.removeDefaultConfiguration();
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
-        Realm.setDefaultConfiguration(realmConfiguration);
-
-        Log.d(MainActivity.class.getName(), "REALM CONFIGURED!");
     }
 
     @Override
@@ -133,6 +119,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        item.setChecked(true);
         int id = item.getItemId();
         mFragmentTransaction = mFragmentManager.beginTransaction();
 
@@ -145,10 +132,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_vendors) {
             setActionBarElevation(mConstantsInstance.getZeroElevation());
             mFragmentTransaction.replace(R.id.mainContainerView,new VendorsTabLayoutFragment()).commit();
-            //VendorsActivity.startActivity(this);
         } else if (id == R.id.nav_projects) {
             setActionBarElevation(mConstantsInstance.getZeroElevation());
-            ProjectsActivity.startActivity(this);
+            mFragmentTransaction.replace(R.id.mainContainerView,new ProjectsTabLayoutFragment()).commit();
         } else if (id == R.id.nav_settings) {
             setActionBarElevation(mConstantsInstance.getDefaultElevation());
             mFragmentTransaction.replace(R.id.mainContainerView,new SettingsFragment()).commit();

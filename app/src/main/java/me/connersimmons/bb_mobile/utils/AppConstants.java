@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile;
+package me.connersimmons.bb_mobile.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

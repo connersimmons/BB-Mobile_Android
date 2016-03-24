@@ -1,7 +1,6 @@
 package me.connersimmons.bb_mobile.fragments.projects;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,21 +28,18 @@ import com.quemb.qmbform.descriptor.SectionDescriptor;
 import com.quemb.qmbform.descriptor.Value;
 
 import io.realm.Realm;
-import me.connersimmons.bb_mobile.AppConstants;
+import me.connersimmons.bb_mobile.utils.AppConstants;
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.activities.NewProjectActivity;
 import me.connersimmons.bb_mobile.models.Project;
+import me.connersimmons.bb_mobile.presenters.impl.ProjectPresenter;
 import me.connersimmons.bb_mobile.utils.DateFormatter;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class NewProjectDialogFragment extends DialogFragment implements OnFormRowValueChangedListener,
         OnFormRowClickListener {
-
-    private NewProjectActivity activity;
 
     private ListView mListView;
     private HashMap<String, Value<?>> mChangesMap;
@@ -54,7 +50,7 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
     private FormManager mFormManager;
 
     private Realm realm;
-    private OnAddStudentClickListener listener;
+    private ProjectPresenter mProjectPresenter;
 
     public NewProjectDialogFragment() {
         // Required empty public constructor
@@ -62,12 +58,6 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
 
     public static final NewProjectDialogFragment newInstance() {
         return new NewProjectDialogFragment();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity = (NewProjectActivity) activity;
     }
 
     @Override
@@ -81,8 +71,6 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         }
-
-        //realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -96,6 +84,8 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mProjectPresenter = new ProjectPresenter();
 
         mChangesMap = new HashMap<String, Value<?>>();
 
@@ -268,9 +258,10 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
             //setSaveItemVisibility();
 
             Log.d(TAG, "PROJECT BEING CREATED: " + newProject.getTitle());
-            activity.setProject(newProject);
+            //activity.setProject(newProject);
+            //listener.onAddStudentClickListener(newProject);
 
-            listener.onAddStudentClickListener(newProject);
+            mProjectPresenter.addProject(newProject);
 
             //Close fragment and activity
             this.dismiss();
@@ -451,6 +442,7 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
         }
     }
 
+    /*
     public void setListener(OnAddStudentClickListener listener) {
         this.listener = listener;
     }
@@ -458,4 +450,5 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
     public interface OnAddStudentClickListener {
         void onAddStudentClickListener(Project student);
     }
+    */
 }

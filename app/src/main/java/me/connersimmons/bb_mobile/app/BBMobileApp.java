@@ -11,20 +11,13 @@ import io.realm.RealmConfiguration;
  */
 public class BBMobileApp extends Application {
 
-    private static BBMobileApp instance;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(realmConfiguration);
 
         Log.d(BBMobileApp.class.getName(), "REALM CONFIGURED!");
-    }
-
-    public static BBMobileApp getInstance() {
-        return instance;
     }
 
 }

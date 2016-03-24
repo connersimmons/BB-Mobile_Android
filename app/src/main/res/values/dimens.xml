@@ -13,4 +13,11 @@
 
     <dimen name="tab_height">48dp</dimen>
     <dimen name="tab_height_large">72dp</dimen>
+
+    <!--The padding around all the items inside the row_drop.xml-->
+    <dimen name="row_drop_padding">22dp</dimen>
+
+    <!--Padding on both sides for the TextView inside row_drop.xml-->
+    <dimen name="tv_proj_title_horizontal_padding">22dp</dimen>
+    <dimen name="tv_no_items_vertical_padding">22dp</dimen>
 </resources>

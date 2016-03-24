@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.connersimmons.bb_mobile.ui;
+package me.connersimmons.bb_mobile.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

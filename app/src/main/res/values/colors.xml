@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00509D</color>
-    <color name="colorPrimaryDark">#1D1D76</color>
-    <color name="colorAccent">#0082FF</color>
+    <color name="colorPrimary">#2196F3</color>      //Material Blue 500
+    <color name="colorPrimaryDark">#0D47A1</color>  //Material Blue 900
+    <color name="colorAccent">#1976D2</color>       //Material Blue 700
     <color name="transparent">#00000000</color>
 
     <color name="text_enabled">#FFFFFF</color>
     <color name="text_disabled">#4DFFFFFF</color>
 
     <color name="icon_enabled">#FFFFFF</color>
-    <color name="icon_disabled">#4CA7FF</color>
+    <color name="icon_disabled">@color/colorAccent</color>
 
     <color name="black">#000</color>
     <color name="white">#FFF</color>
 
-    <color name="default_header_color">#445566</color>
+    <color name="nav_drawer_row_item_pressed">@color/colorPrimary</color>
+    <color name="nav_drawer_row_item_selected">@color/colorPrimary</color>
+    <color name="nav_drawer_row_item_unselected">@color/transparent</color>
+
+    <color name="default_header_color">#607D8B</color>  //Material Blue Grey 500
 </resources>

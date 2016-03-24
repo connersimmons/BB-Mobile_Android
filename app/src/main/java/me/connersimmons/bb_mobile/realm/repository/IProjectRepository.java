@@ -8,6 +8,7 @@ import me.connersimmons.bb_mobile.models.Project;
  */
 public interface IProjectRepository {
 
+    /*
     interface OnSaveProjectCallback {
         void onSuccess();
         void onError(String message);
@@ -35,4 +36,15 @@ public interface IProjectRepository {
     void getAllProjects(OnGetAllProjectsCallback callback);
 
     void getProjectById(String id, OnGetProjectByIdCallback callback);
+    */
+
+    void addProject(Project project);
+
+    RealmResults<Project> getAllProjects();
+
+    void getProjectById(String id);
+
+    void updateProject(Project project);
+
+    void deleteProjectById(String id);
 }

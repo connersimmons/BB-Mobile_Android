@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.adapters;
+package me.connersimmons.bb_mobile.widgets.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,18 +12,18 @@ import android.widget.ImageView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.fragments.vendors.VendorsAlphaFragment;
-import me.connersimmons.bb_mobile.fragments.vendors.VendorsCityFragment;
-import me.connersimmons.bb_mobile.fragments.vendors.VendorsClassificationFragment;
+import me.connersimmons.bb_mobile.fragments.projects.ProjectsAlphaFragment;
+import me.connersimmons.bb_mobile.fragments.projects.ProjectsCityFragment;
+import me.connersimmons.bb_mobile.fragments.projects.ProjectsDateFragment;
 
 /**
  * Created by connersimmons on 2/6/16.
  */
-public class VendorsPagerAdapter extends FragmentPagerAdapter {
+public class ProjectsPagerAdapter extends FragmentPagerAdapter {
 
     public static int numItems = 3 ;
 
-    public VendorsPagerAdapter(FragmentManager fm) {
+    public ProjectsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -33,9 +33,9 @@ public class VendorsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position){
-            case 0 : return new VendorsAlphaFragment();
-            case 1 : return new VendorsClassificationFragment();
-            case 2 : return new VendorsCityFragment();
+            case 0 : return new ProjectsAlphaFragment();
+            case 1 : return new ProjectsDateFragment();
+            case 2 : return new ProjectsCityFragment();
         }
         return null;
     }
@@ -52,7 +52,7 @@ public class VendorsPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0 : return "A-Z";
-            case 1 : return "Class";
+            case 1 : return "Date";
             case 2 : return "City";
         }
         return null;
@@ -71,7 +71,7 @@ public class VendorsPagerAdapter extends FragmentPagerAdapter {
                         icon.setImageResource(R.drawable.ic_sort_by_alpha_white_24dp);
                         break;
                     case 1:
-                        icon.setImageResource(R.drawable.ic_class_white_24dp);
+                        icon.setImageResource(R.drawable.ic_date_range_white_24dp);
                         break;
                     case 2:
                         icon.setImageResource(R.drawable.ic_location_on_white_24dp);

@@ -15,9 +15,57 @@ import me.connersimmons.bb_mobile.realm.table.RealmTable;
 public class ProjectRepository implements IProjectRepository {
 
     @Override
-    public void addProject(Project project, OnSaveProjectCallback callback) {
+    public void addProject(Project project) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
+        //Project realmProject = realm.copyToRealm(project);
+        project.setId(UUID.randomUUID().toString());
+        realm.copyToRealm(project);
+        realm.commitTransaction();
+    }
+
+    @Override
+    public RealmResults<Project> getAllProjects() {
+        Realm realm = Realm.getDefaultInstance();
+        //RealmResults<Project> results = realm.where(Project.class).findAll();
+        return realm.where(Project.class).findAllSortedAsync(RealmTable.Project.TITLE);
+    }
+
+    @Override
+    public void getProjectById(String id) {
+        Realm realm = Realm.getDefaultInstance();
+        Project student = realm.where(Project.class).equalTo(RealmTable.Project.ID, id).findFirst();
+    }
+
+    @Override
+    public void updateProject(Project project) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        //Project realmProject = realm.copyToRealmOrUpdate(project);
+        realm.copyToRealmOrUpdate(project);
+        realm.commitTransaction();
+    }
+
+
+    @Override
+    public void deleteProjectById(String id) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Project result = realm.where(Project.class).equalTo(RealmTable.Project.ID, id).findFirst();
+        result.removeFromRealm();
+        realm.commitTransaction();
+    }
+
+    /*
+    @Override
+    public void addProject(Project project, OnSaveProjectCallback callback) {
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.beginTransaction();
+
+
+
+
         Project realmProject = realm.createObject(Project.class);
 
         realmProject.setId(UUID.randomUUID().toString());
@@ -50,6 +98,7 @@ public class ProjectRepository implements IProjectRepository {
         realmProject.setUnion(project.isUnion());
         realmProject.setValuation(project.getValuation());
         realmProject.setZip(project.getZip());
+
 
         realm.commitTransaction();
 
@@ -86,4 +135,5 @@ public class ProjectRepository implements IProjectRepository {
         if (callback != null)
             callback.onSuccess(student);
     }
+    */
 }

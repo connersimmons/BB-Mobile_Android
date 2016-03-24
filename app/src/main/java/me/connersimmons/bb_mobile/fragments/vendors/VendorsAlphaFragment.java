@@ -1,46 +1,43 @@
 package me.connersimmons.bb_mobile.fragments.vendors;
 
-import android.content.Context;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import java.util.Collections;
 import java.util.List;
 
-import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderDecoration;
-import me.connersimmons.bb_mobile.AppConstants;
+import me.connersimmons.bb_mobile.utils.AppConstants;
 import me.connersimmons.bb_mobile.R;
-import me.connersimmons.bb_mobile.adapters.VendorsAlphaViewAdapter;
 import me.connersimmons.bb_mobile.models.Contact;
-import me.connersimmons.bb_mobile.ui.BaseDecorationFragment;
+import me.connersimmons.bb_mobile.utils.CompanyComparator;
+import me.connersimmons.bb_mobile.widgets.Divider;
+import me.connersimmons.bb_mobile.widgets.AlphaRecyclerView;
+import me.connersimmons.bb_mobile.widgets.RecyclerClickListener;
+import me.connersimmons.bb_mobile.widgets.adapters.DataManager;
 
 /**
- * Created by connersimmons on 2/4/16.
+ * A simple {@link Fragment} subclass.
  */
-public class VendorsAlphaFragment extends BaseDecorationFragment implements RecyclerView.OnItemTouchListener {
+public class VendorsAlphaFragment extends Fragment {
 
-    private static final String TAG = VendorsAlphaFragment.class.getName();
-    private static final String BB_VENDOR_GROUP_NAME = "MyBlueBookVendors";
-
-    private StickyHeaderDecoration decor;
-
-
-    private Context mContext;
-    private List<Contact> myContacts;
+    private RecyclerView mRecycler;
+    private DataManager mAdapter;
+    private List<Contact> contactList;
     private AppConstants constantsInstance;
-
-    //HashMap groups;
+    private String TAG = VendorsAlphaFragment.class.getName();
 
     public VendorsAlphaFragment() {
+        // Required empty public constructor
 
-        //groups = new HashMap<String, String>();
         constantsInstance = AppConstants.getInstance();
     }
 
@@ -48,88 +45,43 @@ public class VendorsAlphaFragment extends BaseDecorationFragment implements Recy
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        //Since reading contacts takes more time, let's run it on a separate thread.
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                myContacts = ContactsProvider.load(mContext);
-            }
-        }).start();
-        */
-
+        contactList = constantsInstance.getContactsList();
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-    }
-
 
 
     @Override
-    protected void setAdapterAndDecor(RecyclerView list) {
-        //myContacts = ContactsProvider.load(mContext);
-        myContacts = constantsInstance.getContactsList();
-        final VendorsAlphaViewAdapter adapter = new VendorsAlphaViewAdapter(myContacts, this.getActivity());
-        decor = new StickyHeaderDecoration(adapter);
-        setHasOptionsMenu(true);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        list.setAdapter(adapter);
-        list.addItemDecoration(decor, 1);
-        list.addOnItemTouchListener(this);
+        //Log.d(TAG, "Contacts: " + contactList.toString());
+
+        View view = inflater.inflate(R.layout.fragment_vendors, container, false);
+
+        Collections.sort(contactList, new CompanyComparator());
+
+        mRecycler = (AlphaRecyclerView) view.findViewById(R.id.rv_vendors);
+        mRecycler.addItemDecoration(new Divider(getContext(), LinearLayoutManager.VERTICAL));
+        mRecycler.setItemAnimator(new DefaultItemAnimator());
+        //mRecycler.hideIfEmpty(mToolbar);
+        //mRecycler.showIfEmpty(mEmptyView);
+
+        mRecycler.addOnItemTouchListener( // and the click is handled
+                new RecyclerClickListener(getContext(), new RecyclerClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        // STUB:
+                        // The click on the item must be handled
+                        Snackbar.make(view, "Present " + contactList.get(position).getCompany() + " Detail View", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                }));
+
+        mAdapter = new DataManager(contactList);
+        mRecycler.setAdapter(mAdapter);
+
+
+
+        return view;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_local_contact) {
-            // TODO: load contact picker
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-        // really bad click detection just for demonstration purposes
-        // it will not allow the list to scroll if the swipe motion starts
-        // on top of a header
-        View v = rv.findChildViewUnder(e.getX(), e.getY());
-        return v == null;
-//        return rv.findChildViewUnder(e.getX(), e.getY()) != null;
-    }
-
-    @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        // only use the "UP" motion event, discard all others
-        if (e.getAction() != MotionEvent.ACTION_UP) {
-            return;
-        }
-
-        // find the header that was clicked
-        View view = decor.findHeaderViewUnder(e.getX(), e.getY());
-
-        if (view instanceof TextView) {
-            Toast.makeText(this.getActivity(), ((TextView) view).getText() + " clicked", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        // do nothing
-    }
-
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_vendors_alpha, container, false);
-
-        return rootView;
-
-    }
-    */
 
 }

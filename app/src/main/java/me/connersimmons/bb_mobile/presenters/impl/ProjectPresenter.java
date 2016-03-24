@@ -1,11 +1,7 @@
 package me.connersimmons.bb_mobile.presenters.impl;
 
 
-import io.realm.RealmList;
 import io.realm.RealmResults;
-import me.connersimmons.bb_mobile.activities.NewProjectActivity;
-import me.connersimmons.bb_mobile.activities.ProjectsActivity;
-import me.connersimmons.bb_mobile.fragments.base.BaseFragment;
 import me.connersimmons.bb_mobile.models.Project;
 import me.connersimmons.bb_mobile.presenters.IProjectPresenter;
 import me.connersimmons.bb_mobile.realm.repository.IProjectRepository;
@@ -16,6 +12,33 @@ import me.connersimmons.bb_mobile.realm.repository.impl.ProjectRepository;
  */
 public class ProjectPresenter implements IProjectPresenter {
 
+    private IProjectRepository projectRepository;
+
+    public ProjectPresenter() {
+        projectRepository = new ProjectRepository();
+    }
+
+    @Override
+    public void addProject(Project project) {
+        projectRepository.addProject(project);
+    }
+
+    @Override
+    public void deleteProjectById(String projectId) {
+        projectRepository.deleteProjectById(projectId);
+    }
+
+    @Override
+    public RealmResults<Project> getAllProjects() {
+        return projectRepository.getAllProjects();
+    }
+
+    @Override
+    public void getProjectById(String projectId) {
+        projectRepository.getProjectById(projectId);
+    }
+
+    /*
     private ProjectsActivity view;
 
     private IProjectRepository.OnDeleteProjectCallback onDeleteProjectCallback;
@@ -105,5 +128,7 @@ public class ProjectPresenter implements IProjectPresenter {
         onGetAllProjectsCallback = null;
         onGetProjectByIdCallback = null;
     }
+
+    */
 
 }

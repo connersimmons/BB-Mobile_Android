@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.connersimmons.bb_mobile.adapters;
+package me.connersimmons.bb_mobile.widgets.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
-import me.connersimmons.bb_mobile.CompanyComparator;
+import me.connersimmons.bb_mobile.utils.CompanyComparator;
 import me.connersimmons.bb_mobile.R;
 import me.connersimmons.bb_mobile.models.Contact;
 

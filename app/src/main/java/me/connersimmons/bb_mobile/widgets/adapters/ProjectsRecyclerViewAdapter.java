@@ -1,4 +1,4 @@
-package me.connersimmons.bb_mobile.adapters;
+package me.connersimmons.bb_mobile.widgets.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

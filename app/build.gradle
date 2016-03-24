@@ -36,4 +36,5 @@ dependencies {
     compile 'com.googlecode.ez-vcard:ez-vcard:0.9.9'
     compile 'ca.barrenechea.header-decor:header-decor:0.2.6'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0'
+    compile 'com.appeaser.sublimepickerlibrary:sublimepickerlibrary:2.0.0'
 }

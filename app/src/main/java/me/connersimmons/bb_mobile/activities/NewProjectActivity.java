@@ -46,23 +46,6 @@ public class NewProjectActivity extends BaseActivity implements
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.add(android.R.id.content, newFragment, NewProjectDialogFragment.class.getName())
                 .commit();
-
-        newFragment.setListener(new NewProjectDialogFragment.OnAddStudentClickListener() {
-            @Override
-            public void onAddStudentClickListener(Project project) {
-                //newFragment.dismiss();
-
-                Log.d(NewProjectActivity.class.getName(), "NEW PROJECT: " + newProject.getTitle());
-                ProjectsActivity.getPresenter().addProject(newProject);
-
-                //presenter.addStudentByUniversityId(student, universityId);
-                //presenter.getAllStudentsByUniversityId(universityId);
-            }
-        });
-    }
-
-    public void setProject(Project project) {
-        this.newProject = project;
     }
 
     @Override
