@@ -14,6 +14,8 @@
     <dimen name="tab_height">48dp</dimen>
     <dimen name="tab_height_large">72dp</dimen>
 
+    <dimen name="new_project_et_textsize">16sp</dimen>
+
     <!--The padding around all the items inside the row_drop.xml-->
     <dimen name="row_drop_padding">22dp</dimen>
 

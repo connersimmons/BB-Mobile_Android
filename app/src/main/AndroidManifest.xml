@@ -27,10 +27,11 @@
         <activity
             android:name=".activities.NewProjectActivity"
             android:label="@string/title_new_project"
-            android:parentActivityName=".activities.ProjectsActivity">
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ProjectsActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
     </application>
 

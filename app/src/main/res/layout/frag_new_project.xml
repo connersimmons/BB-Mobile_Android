@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout01"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:orientation="vertical" >
+
+            <!-- General Information -->
+            <TextView
+                android:id="@+id/GenInfoLabel"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="General Information" >
+            </TextView>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_project_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin" >
+
+                <EditText
+                    android:id="@+id/et_project_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="@dimen/new_project_et_textsize"
+                    android:inputType="textCapWords"
+                    android:hint="Title" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_project_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/et_project_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="@dimen/new_project_et_textsize"
+                    android:inputType="textPostalAddress|textCapWords"
+                    android:hint="Address" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_project_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/et_project_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="@dimen/new_project_et_textsize"
+                    android:inputType="textCapWords"
+                    android:hint="City" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Scope -->
+            <TextView
+                android:id="@+id/ScopeLabel"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="Scope" >
+            </TextView>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_project_scope"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin" >
+
+                <EditText
+                    android:id="@+id/et_project_scope"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:textSize="@dimen/new_project_et_textsize"
+                    android:inputType="textMultiLine"
+                    android:hint="Place other valuable project information here." />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Labor -->
+            <TextView
+                android:id="@+id/LaborLabel"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="Labor" >
+            </TextView>
+
+            <CheckBox
+                android:id="@+id/cb_union"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:checked="false"
+                android:text="Union"/>
+
+            <CheckBox
+                android:id="@+id/cb_nonunion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:checked="false"
+                android:text="Non-Union"/>
+
+            <CheckBox
+                android:id="@+id/cb_prevailing_wage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:checked="false"
+                android:text="Prevailing Wage"/>
+
+            <!-- Insurance -->
+            <TextView
+                android:id="@+id/InsuranceLabel"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="Insurance" >
+            </TextView>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_bid_security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin" >
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="@dimen/new_project_et_textsize"
+                    android:inputType="numberDecimal"
+                    android:hint="Bid Security (%)" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_performance_bond"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/et_performance_bond"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="@dimen/new_project_et_textsize"
+                    android:inputType="numberDecimal"
+                    android:hint="Performance Bond (%)" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_payment_bond"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/et_payment_bond"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="@dimen/new_project_et_textsize"
+                    android:inputType="numberDecimal"
+                    android:hint="Payment Bond (%)" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Experience -->
+            <TextView
+                android:id="@+id/ExperienceLabel"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="Experience" >
+            </TextView>
+
+            <CheckBox
+                android:id="@+id/cb_leed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:checked="false"
+                android:text="LEED"/>
+
+            <CheckBox
+                android:id="@+id/cb_bim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:checked="false"
+                android:text="BIM"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

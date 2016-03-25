@@ -27,6 +27,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="save">Save</string>
     <string name="str_no_projects">No Projects To Display</string>
+    <string name="prompt_select">Select..</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

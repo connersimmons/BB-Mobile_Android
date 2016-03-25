@@ -76,6 +76,7 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //View view = inflater.inflate(R.layout.frag_new_project, container, false);
         View view = inflater.inflate(R.layout.fragment_new_project, container, false);
         mListView = (ListView) view.findViewById(R.id.list);
         return view;
@@ -104,6 +105,7 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
         mFormManager.setup(mFormDescriptor, mListView, getActivity());
         mFormManager.setOnFormRowClickListener(this);
         mFormManager.setOnFormRowValueChangedListener(this);
+
     }
 
     // General Information Section
@@ -285,9 +287,11 @@ public class NewProjectDialogFragment extends DialogFragment implements OnFormRo
     }
 
     private void setSaveItemVisibility() {
+
         if (mSaveMenuItem != null){
             mSaveMenuItem.setVisible(mChangesMap.size() > 0);
         }
+
     }
 
     private Project createNewProject() {
